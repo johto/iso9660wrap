@@ -358,11 +358,7 @@ func writeData(w *ISO9660Writer, infh io.Reader, inputFileSize uint32, inputFile
 
 func numTotalSectors(inputFileSize uint32) uint32 {
 	var numDataSectors uint32
-	if (inputFileSize % SectorSize) == 0 {
-		numDataSectors = inputFileSize / SectorSize
-	} else {
-		numDataSectors = (inputFileSize / SectorSize) + 1
-	}
+	numDataSectors = (inputFileSize + (SectorSize - 1)) / SectorSize
 	return 1 + rootDirectorySectorNum + numDataSectors
 }
 
