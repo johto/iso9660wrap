@@ -288,8 +288,8 @@ func writePrimaryVolumeDescriptor(w *ISO9660Writer, inputFileSize uint32, inputF
 	sw.WriteUnspecifiedDateTime() // expires
 	sw.WriteUnspecifiedDateTime() // is effective (?)
 
-	sw.WriteByte('\x01')
-	sw.WriteByte('\x00')
+	sw.WriteByte('\x01') // version
+	sw.WriteByte('\x00') // reserved
 
 	sw.PadWithZeros() // 512 (reserved for app) + 653 (zeros)
 }
