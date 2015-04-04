@@ -13,7 +13,7 @@ func WriteDirectoryRecord(w *SectorWriter, identifier string, firstSectorNum uin
 	w.WriteByte(byte(recordLength))
 	w.WriteByte(0) // number of sectors in extended attribute record
 	w.WriteBothEndianDWord(firstSectorNum)
-	w.WriteBothEndianDWord(3 * SectorSize) // directory length (always ".", ".." and the actual file)
+	w.WriteBothEndianDWord(SectorSize) // directory length
 	writeDirectoryRecordtimestamp(w, time.Now())
 	w.WriteByte(byte(3)) // bitfield; directory
 	w.WriteByte(byte(0)) // file unit size for an interleaved file

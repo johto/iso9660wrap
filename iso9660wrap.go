@@ -327,7 +327,7 @@ func writeData(w *ISO9660Writer, infh io.Reader, inputFileSize uint32, inputFile
 	}
 
 	WriteDirectoryRecord(sw, "\x00", w.CurrentSector())
-	WriteDirectoryRecord(sw, "\x01", w.CurrentSector())
+	WriteDirectoryRecord(sw, "\x01", rootDirectorySectorNum)
 	WriteFileRecordHeader(sw, inputFilename, w.CurrentSector() + 1, inputFileSize)
 
 	// Now stream the data.  Note that the first buffer is never of SectorSize,
@@ -357,11 +357,13 @@ func writeData(w *ISO9660Writer, infh io.Reader, inputFileSize uint32, inputFile
 }
 
 func numTotalSectors(inputFileSize uint32) uint32 {
-	numDataSectors := inputFileSize / SectorSize
-	if numDataSectors == 0 {
-		numDataSectors = 1
+	var numDataSectors uint32
+	if (inputFileSize % SectorSize) == 0 {
+		numDataSectors = inputFileSize / SectorSize
+	} else {
+		numDataSectors = (inputFileSize / SectorSize) + 1
 	}
-	return 1 + bigEndianPathTableSectorNum + 1 + 1 + numDataSectors
+	return 1 + rootDirectorySectorNum + numDataSectors
 }
 
 func getInputFileSizeAndName(fh *os.File) (uint32, string, error) {
