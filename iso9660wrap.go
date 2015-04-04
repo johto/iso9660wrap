@@ -185,6 +185,9 @@ func main() {
 	if err != nil {
 		log.Fatalf("could not read from input file %s: %s", infile, err)
 	}
+	if inputFileSize == 0 {
+		log.Fatal("input file must be at least 1 byte in size")
+	}
 	inputFilename = strings.ToUpper(inputFilename)
 	if !filenameSatisfiesISOConstraints(inputFilename) {
 		log.Fatalf("input file name %s does not satisfy the ISO9660 character set constraints", infile)
