@@ -376,12 +376,15 @@ func getInputFileSizeAndName(fh *os.File) (uint32, string, error) {
 func filenameSatisfiesISOConstraints(filename string) bool {
 	invalidCharacter := func (r rune) bool {
 		// According to ISO9660, only capital letters, digits, and underscores
-		// are permitted.
+		// are permitted.  Some sources say a dot is allowed as well.  I'm too
+		// lazy to figure it out right now.
 		if r >= 'A' && r <= 'Z' {
 			return false
 		} else if r >= '0' && r <= '9' {
 			return false
 		} else if r == '_' {
+			return false
+		} else if r == '.' {
 			return false
 		}
 		return true
